@@ -8,9 +8,8 @@ function setupMap() {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 }
-
-function addGeoJSON() {
-    const geoJSON = {
+function getFeatures() {
+    return {
         type: "FeatureCollection",
         features: [
             {
@@ -89,7 +88,9 @@ function addGeoJSON() {
             },
         ],
     };
+}
 
+function addGeoJSON(geoJSON) {
     L.geoJSON(geoJSON, {
         style: function (feature) {
             let kleur = "grey";
@@ -114,4 +115,4 @@ function addGeoJSON() {
 }
 
 setupMap();
-addGeoJSON();
+addGeoJSON(getFeatures());
