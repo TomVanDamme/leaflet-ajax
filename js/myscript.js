@@ -22,11 +22,17 @@ function doAJAXusingFetch() {
 async function doAJAXusingAwait() {
     const url = document.querySelector("#urlInput").value;
 
-    const response = await fetch(url);
+    try {
+        const response = await fetch(url);
 
-    const json = await response.json();
+        const json = await response.json();
 
-    console.log(json);
+        console.log(json);
+    } catch (error) {
+        console.log(error);
+    }
+
+    console.log("Dit doen we altijd");
 }
 
 function setupHandlers() {
