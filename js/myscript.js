@@ -9,4 +9,30 @@ function setupMap() {
     }).addTo(map);
 }
 
+function doAJAXusingFetch() {
+    const url = document.querySelector("#urlInput").value;
+
+    fetch(url)
+        .then((response) => response.json())
+        .then((json) => console.log(json))
+        .catch((error) => console.log(error))
+        .finally(() => console.log("Dit doen we altijd!!"));
+}
+
+async function doAJAXusingAwait() {
+    const url = document.querySelector("#urlInput").value;
+
+    const response = await fetch(url);
+
+    const json = await response.json();
+
+    console.log(json);
+}
+
+function setupHandlers() {
+    document.querySelector("#fetchButton").addEventListener("click", doAJAXusingFetch);
+    document.querySelector("#awaitButton").addEventListener("click", doAJAXusingAwait);
+}
+
 setupMap();
+setupHandlers();
