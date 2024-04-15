@@ -9,35 +9,37 @@ function setupMap() {
     }).addTo(map);
 }
 
-function doAJAXusingFetch() {
-    const url = document.querySelector("#urlInput").value;
-
-    fetch(url)
-        .then((response) => response.json())
-        .then((json) => console.log(json))
-        .catch((error) => console.log(error))
-        .finally(() => console.log("Dit doen we altijd!!"));
-}
-
-async function doAJAXusingAwait() {
-    const url = document.querySelector("#urlInput").value;
+async function zoekAdres() {
+    const base_url = "https://geo.api.vlaanderen.be/geolocation/v4/Location";
+    const adres = document.querySelector("#adresInput").value;
 
     try {
+        const url = encodeURI(`${base_url}?q=${adres}`);
+        console.log(url);
         const response = await fetch(url);
 
         const json = await response.json();
-
         console.log(json);
+
+        if (json.LocationResult.length > 0) {
+            lat = json.LocationResult[0].Location.Lat_WGS84;
+            lng = json.LocationResult[0].Location.Lon_WGS84;
+
+            const location = L.latLng(lat, lng);
+
+            map.flyTo(location, 15);
+
+            map.openPopup(json.LocationResult[0].FormattedAddress, location);
+        } else {
+            alert("Geen resultaten gevonden");
+        }
     } catch (error) {
         console.log(error);
     }
-
-    console.log("Dit doen we altijd");
 }
 
 function setupHandlers() {
-    document.querySelector("#fetchButton").addEventListener("click", doAJAXusingFetch);
-    document.querySelector("#awaitButton").addEventListener("click", doAJAXusingAwait);
+    document.querySelector("#zoekButton").addEventListener("click", zoekAdres);
 }
 
 setupMap();
